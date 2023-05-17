@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="CatalogService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Employee" EntityType="CatalogService.Employee">
+                    <NavigationPropertyBinding Path="technology" Target="Skill"/>
+                </EntitySet>
+                <EntitySet Name="Skill" EntityType="CatalogService.Skill">
+                    <NavigationPropertyBinding Path="techname" Target="Employee"/>
+                </EntitySet>
+            </EntityContainer>
+            <EntityType Name="Employee">
+                <Key>
+                    <PropertyRef Name="EmployeeId"/>
+                </Key>
+                <Property Name="EmployeeId" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="Name" Type="Edm.String"/>
+                <Property Name="EmpGender" Type="Edm.String"/>
+                <Property Name="EmpEmail" Type="Edm.String"/>
+                <Property Name="city_ID" Type="Edm.Int32"/>
+                <NavigationProperty Name="technology" Type="Collection(CatalogService.Skill)" Partner="techname">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Skill">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="expinyears" Type="Edm.Int32"/>
+                <Property Name="skillname" Type="Edm.String"/>
+                <NavigationProperty Name="techname" Type="CatalogService.Employee" Partner="technology">
+                    <OnDelete Action="Cascade"/>
+                    <ReferentialConstraint Property="techname_ID" ReferencedProperty="EmployeeId"/>
+                </NavigationProperty>
+                <Property Name="techname_ID" Type="Edm.Guid"/>
+            </EntityType>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

@@ -1,0 +1,81 @@
+### creating all the details using many to many association
+
+### Read Metadata 
+GET http://localhost:4004/catalog/$metadata
+
+### Read Employee
+
+GET http://localhost:4004/catalog/Employee?$expand=technology
+
+###
+GET http://localhost:4004/catalog/Skill
+
+### Create
+
+POST http://localhost:4004/catalog/Employee HTTP/1.1
+Content-Type: application/json
+
+{ 
+    "Name"      : "Ragupathi1",
+    "EmpGender" : "M",
+    "EmpEmail"  : "ragupp@deloitte.com",
+    "technology": [
+        {
+        "Id": 18,
+		"expinyears": 4,
+        "skillname" : "ABAP"
+        },
+        {
+        "Id": 19,
+		"expinyears": 2,
+        "skillname" : "InApp"
+        }
+    ]
+}
+
+### Create Skill
+POST http://localhost:4004/catalog/Skill HTTP/1.1
+Content-Type: application/json
+
+{
+
+        "Id": 12,
+		"expinyears": 4,
+        "skillname" : "ABAP"
+
+}
+
+
+### Delete
+DELETE http://localhost:4004/catalog/Employee/51f0ce45-dae3-49b5-aae5-e5712d3bd36a
+Content-Type: application/json
+
+### Delete Skill
+DELETE http://localhost:4004/catalog/Skill
+Content-Type: application/json
+
+### Batch call
+
+POST  http://localhost:4004/catalog/$batch HTTP/1.1
+Content-Type: application/json
+
+{
+ "requests": [{
+
+         "id": "1",
+
+ "method": "DELETE",
+
+ "url": "/Employee",
+
+ "headers": {
+
+ "content-type": "application/json; odata.metadata=minimal; odata.streaming=true",
+
+ "odata-version": "4.0"
+
+ }
+ 
+ }]
+} 
+ 
